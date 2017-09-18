@@ -1,7 +1,14 @@
 import { createSelector } from 'reselect';
 import { decodeConfig, fetchQuery } from './utils';
 
+export const getConfig = state => state.config;
+
 export const getRouter = state => state.router;
+
+export const getService = createSelector(
+  getRouter,
+  state => state.query.service
+);
 
 export const getRouterResult = createSelector(
   getRouter,
@@ -18,13 +25,6 @@ export const getComponent = createSelector(
   state => state.component
 );
 
-export const getConfig = createSelector(
-  getRouter,
-  state => state.hash.length
-    ? decodeConfig(state.hash.substring(1))
-    : {}
-);
-
 export const getEndpoint = createSelector(
   getConfig,
   state => state.endpoint
@@ -32,7 +32,7 @@ export const getEndpoint = createSelector(
 
 export const getGraph = createSelector(
   getConfig,
-  state => state.graph
+  state => state.defaultDataset.namedGraph.name
 );
 
 export const getFetchQuery = createSelector(

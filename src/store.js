@@ -3,6 +3,8 @@ import createSagaMiddleware from 'redux-saga';
 import { routerForBrowser } from 'redux-little-router';
 
 import apps from './apps';
+import saga from './saga';
+import reducer from './reducer';
 import Examples from './components/Examples';
 
 const baseRoutes = {
@@ -23,6 +25,7 @@ const routes = Object.keys(apps).reduce((routes, key) => ({
 const router = routerForBrowser({ routes });
 
 const baseReducerSpec = {
+  config: reducer,
   router: router.reducer
 };
 
@@ -33,15 +36,19 @@ const reducerSpec = Object.keys(apps).reduce((spec, key) => ({
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
+const sagaMiddleware = createSagaMiddleware();
+
 const store = createStore(
   combineReducers(reducerSpec),
   composeEnhancers(
     router.enhancer,
     applyMiddleware(
       router.middleware,
-      createSagaMiddleware()
+      sagaMiddleware
     )
   )
 );
+
+sagaMiddleware.run(saga);
 
 export default store;

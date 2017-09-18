@@ -1,16 +1,20 @@
 import React from 'react';
 import { Link } from 'redux-little-router';
 
-import { encodeConfig } from '../utils';
+// import { encodeConfig } from '../utils';
 
-const dctermsExampleConfig = {
+/* const dctermsExampleConfig = {
   endpoint: 'https://linked.opendata.cz/sparql',
   graph: 'http://linked.opendata.cz/resource/dataset/legislation/cz/uz'
-};
+}; */
+
+const dctermsExampleService = 'http://localhost:3000/dcterms-service.ttl';
 
 const dctermsExampleHref = {
   pathname: '/dcterms',
-  hash: `#${encodeConfig(dctermsExampleConfig)}`
+  query: {
+    service: dctermsExampleService
+  }
 };
 
 const Examples = () => (

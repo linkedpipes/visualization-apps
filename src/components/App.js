@@ -14,8 +14,9 @@ import Grid from 'material-ui/Grid';
 
 import GitHub from './GitHub';
 import Config from './Config';
+import Examples from './Examples';
 
-import { getTitle, getComponent } from '../selectors';
+import { getTitle, getComponent, getEndpoint } from '../selectors';
 
 import './App.css';
 
@@ -33,7 +34,7 @@ const styles = () => ({
   }
 });
 
-const App = ({ classes, title, Component }) => (
+const App = ({ classes, title, Component, endpoint }) => (
   <div className="App">
     <Helmet>
       <title>{title}</title>
@@ -56,12 +57,22 @@ const App = ({ classes, title, Component }) => (
     </AppBar>
     <main className={classes.main}>
       <Grid container spacing={24}>
-        <Grid item xs={12}>
-          <Config />
-        </Grid>
-        <Grid item xs={12}>
-          <Component />
-        </Grid>
+        {endpoint ? (
+          <Grid container spacing={24}>
+            <Grid item xs={12}>
+              <Config />
+            </Grid>
+            <Grid item xs={12}>
+              <Component />
+            </Grid>
+          </Grid>
+        ) : (
+          <Grid container spacing={24}>
+            <Grid item xs={12}>
+              <Examples />
+            </Grid>
+          </Grid>
+        )}
       </Grid>
     </main>
   </div>
@@ -70,6 +81,7 @@ const App = ({ classes, title, Component }) => (
 App.propTypes = {
   classes: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
+  endpoint: PropTypes.string,
   Component: PropTypes.func.isRequired,
 };
 
@@ -80,6 +92,7 @@ App.defaultProps = {
 
 const mapStateToProps = state => ({
   title: getTitle(state),
+  endpoint: getEndpoint(state),
   Component: getComponent(state)
 });
 
