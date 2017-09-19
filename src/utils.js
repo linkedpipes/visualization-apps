@@ -17,7 +17,7 @@ export const fetchQuery = (endpoint, sparqlQuery) => {
 
   const request = new Request(uri, {
     headers: new Headers({
-      Accept: 'application/json'
+      Accept: 'application/ld+json'
     })
   });
 
