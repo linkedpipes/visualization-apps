@@ -4,7 +4,7 @@ CONSTRUCT {
   <http://count> <http://count> ?count .
 }
 WHERE {
-  SELECT count(*) as ?count
+  SELECT (count(*) as ?count)
   FROM <${graph}>
   WHERE {
     ?resource dcterms:title ?title .
