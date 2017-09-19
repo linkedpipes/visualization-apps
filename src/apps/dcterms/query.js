@@ -3,13 +3,11 @@ PREFIX dct: <http://purl.org/dc/terms/>
 CONSTRUCT {
   <http://count> <http://count> ?count .
 }
+FROM <${graph}>
 WHERE {
-  {
-    SELECT (count(*) as ?count)
-    FROM <${graph}>
-    WHERE {
-      ?resource dcterms:title ?title .
-    }
+  SELECT (count(*) as ?count)
+  WHERE {
+    ?resource dct:title ?title .
   }
 }
 `;
