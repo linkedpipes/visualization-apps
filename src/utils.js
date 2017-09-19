@@ -10,7 +10,7 @@ export const buildAction = (type, payload) => ({ type, payload });
 
 export const fetchQuery = (endpoint, sparqlQuery) => {
   const queryParams = {
-    format: 'application/x-json+ld',
+    format: 'application/ld+json',
     timeout: 0,
     debug: 'on',
     query: sparqlQuery
