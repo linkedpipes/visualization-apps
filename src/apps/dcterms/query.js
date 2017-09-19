@@ -15,13 +15,13 @@ WHERE {
 export const select = ({ graph, limit = 10, offset = 0 }) => `
 PREFIX dct: <http://purl.org/dc/terms/>
 CONSTRUCT {
-  ?resource dcterms:title ?title .
+  ?resource dct:title ?title .
 }
+FROM <${graph}>
 WHERE {
   SELECT ?resource ?title
-  FROM <${graph}>
   WHERE {
-    ?resource dcterms:title ?title .
+    ?resource dct:title ?title .
   }
   LIMIT ${limit}
   OFFSET ${offset}
