@@ -10,14 +10,18 @@ export const buildAction = (type, payload) => ({ type, payload });
 
 export const fetchQuery = (endpoint, sparqlQuery) => {
   const queryParams = {
-    format: 'application/ld+json',
-    timeout: 0,
-    debug: 'on',
     query: sparqlQuery
   };
 
   const uri = `${endpoint}?${qs.stringify(queryParams)}`;
-  return fetch(uri);
+
+  const request = new Request(uri, {
+    headers: new Headers({
+      Accept: 'application/json'
+    })
+  });
+
+  return fetch(request);
 };
 
 export const term = (str) => {

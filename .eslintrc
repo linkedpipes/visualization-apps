@@ -11,7 +11,9 @@
     "document": true,
     "atob": true,
     "btoa": true,
-    "fetch": true
+    "fetch": true,
+    "Request": true,
+    "Headers": true
   },
   "rules": {
     "react/jsx-filename-extension": "off",
