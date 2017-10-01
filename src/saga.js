@@ -1,5 +1,5 @@
-import { take, call, select, takeEvery, put } from 'redux-saga/effects';
-import { PUSH } from 'redux-little-router';
+import { call, select, takeEvery, put } from 'redux-saga/effects';
+import { LOCATION_CHANGED } from 'redux-little-router';
 
 import { fetchRDF, buildAction } from './utils';
 import { getService } from './selectors';
@@ -40,6 +40,6 @@ function* loadConfig() {
 export default function* saga() {
   yield call(loadConfig);
 
-  yield takeEvery(PUSH, loadConfig);
+  yield takeEvery(LOCATION_CHANGED, loadConfig);
 }
 
