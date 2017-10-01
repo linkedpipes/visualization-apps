@@ -31,7 +31,7 @@ const Examples = () => (
     <Link href={dctermsExampleHref}>
       DCTerms demo
     </Link>
-    |
+    <br /><br />
     <Link href={foafExampleHref}>
       FOAF demo
     </Link>
