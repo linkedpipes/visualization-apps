@@ -8,7 +8,7 @@ import { Link } from 'redux-little-router';
   graph: 'http://linked.opendata.cz/resource/dataset/legislation/cz/uz'
 }; */
 
-const dctermsExampleService = 'http://localhost:3000/dcterms-service.ttl';
+const dctermsExampleService = 'https://visualisation-apps.netlify.com/dcterms-service.ttl';
 
 const dctermsExampleHref = {
   pathname: '/dcterms',
@@ -19,7 +19,6 @@ const dctermsExampleHref = {
 
 const Examples = () => (
   <div>
-    Demo
     <Link href={dctermsExampleHref}>
       DCTerms demo
     </Link>
