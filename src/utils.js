@@ -2,26 +2,54 @@ import qs from 'qs';
 import N3 from 'n3';
 import jsonld from 'jsonld';
 
+const PROXY_URL = 'https://proxy.dokku.cz';
+
 export const encodeConfig = config => btoa(JSON.stringify(config));
 
 export const decodeConfig = configString => JSON.parse(atob(configString));
 
 export const buildAction = (type, payload) => ({ type, payload });
 
+const buildRequestHttp = (url, queryParams, headers) => {
+  const finalQueryParams = {
+    ...queryParams,
+    url
+  };
+
+  const finalUrl = `${PROXY_URL}?${qs.stringify(finalQueryParams)}`;
+
+  return new Request(finalUrl, {
+    headers: new Headers(headers)
+  });
+};
+
+const buildRequestHttps = (url, queryParams, headers) => {
+  const finalUrl = `${url}?${qs.stringify(queryParams)}`;
+  return new Request(finalUrl, {
+    headers: new Headers(headers)
+  });
+};
+
+export const buildRequest = (url, queryParams, headers) => {
+  const buildRequestFunction = url.startsWith('https://')
+    ? buildRequestHttps
+    : buildRequestHttp;
+  return buildRequestFunction(url, queryParams, headers);
+};
+
+export const fetchProxy = (url, queryParams = {}, headers = {}) => {
+  return fetch(buildRequest(url, queryParams, headers));
+};
+
 export const fetchQuery = (endpoint, sparqlQuery) => {
   const queryParams = {
     query: sparqlQuery
   };
+  const headers = {
+    Accept: 'application/ld+json'
+  };
 
-  const uri = `${endpoint}?${qs.stringify(queryParams)}`;
-
-  const request = new Request(uri, {
-    headers: new Headers({
-      Accept: 'application/ld+json'
-    })
-  });
-
-  return fetch(request);
+  return fetchProxy(endpoint, queryParams, headers);
 };
 
 export const term = (str) => {
@@ -71,7 +99,7 @@ export const parseTurtle = input => new Promise((resolve, reject) => {
 });
 
 export const fetchText = url =>
-  fetch(url).then(response => response.text());
+  fetchProxy(url).then(response => response.text());
 
 export const fetchRDF = (url, context = undefined, frame = undefined, compactOptions = {}) =>
   fetchText(url)
