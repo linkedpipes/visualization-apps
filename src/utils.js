@@ -2,7 +2,7 @@ import qs from 'qs';
 import N3 from 'n3';
 import jsonld from 'jsonld';
 
-const PROXY_URL = 'https://proxy.dokku.cz?';
+const PROXY_URL = 'https://proxy.dokku.cz/';
 
 export const encodeConfig = config => btoa(JSON.stringify(config));
 
@@ -11,8 +11,9 @@ export const decodeConfig = configString => JSON.parse(atob(configString));
 export const buildAction = (type, payload) => ({ type, payload });
 
 const buildProxyRequest = (url, queryParams, headers) => {
-  const finalUrl = `${PROXY_URL}${url}?${qs.stringify(queryParams)}`;
-  return new Request(finalUrl, {
+  const finalUrl = `${url}?${qs.stringify(queryParams)}`;
+  const proxyUrl = `${PROXY_URL}?${qs.stringify({ [finalUrl]: true })}`;
+  return new Request(proxyUrl, {
     headers: new Headers(headers)
   });
 };

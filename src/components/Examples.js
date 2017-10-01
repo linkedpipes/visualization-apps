@@ -8,7 +8,7 @@ import { Link } from 'redux-little-router';
   graph: 'http://linked.opendata.cz/resource/dataset/legislation/cz/uz'
 }; */
 
-const dctermsExampleService = 'https://visualisation-apps.netlify.com/dcterms-service.ttl';
+const dctermsExampleService = 'https://raw.githubusercontent.com/karelklima/visualisation-apps/master/public/dcterms-service.ttl';
 
 const dctermsExampleHref = {
   pathname: '/dcterms',
