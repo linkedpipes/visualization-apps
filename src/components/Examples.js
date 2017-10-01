@@ -17,10 +17,23 @@ const dctermsExampleHref = {
   }
 };
 
+const foafExampleService = 'https://raw.githubusercontent.com/karelklima/visualisation-apps/master/public/foaf-service.ttl';
+
+const foafExampleHref = {
+  pathname: '/foaf',
+  query: {
+    service: foafExampleService
+  }
+};
+
 const Examples = () => (
   <div>
     <Link href={dctermsExampleHref}>
       DCTerms demo
+    </Link>
+    |
+    <Link href={foafExampleHref}>
+      FOAF demo
     </Link>
   </div>
 );
