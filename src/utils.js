@@ -2,8 +2,7 @@ import qs from 'qs';
 import N3 from 'n3';
 import jsonld from 'jsonld';
 
-const CORS_URL = 'https://cors.io/?';
-const PROXY_URL = 'https://proxy.dokku.cz';
+const PROXY_URL = 'https://proxy.dokku.cz?';
 
 export const encodeConfig = config => btoa(JSON.stringify(config));
 
@@ -11,35 +10,15 @@ export const decodeConfig = configString => JSON.parse(atob(configString));
 
 export const buildAction = (type, payload) => ({ type, payload });
 
-const buildRequestHttp = (url, queryParams, headers) => {
-  const finalQueryParams = {
-    ...queryParams,
-    url
-  };
-
-  const finalUrl = `${PROXY_URL}?${qs.stringify(finalQueryParams)}`;
-
+const buildProxyRequest = (url, queryParams, headers) => {
+  const finalUrl = `${PROXY_URL}${url}?${qs.stringify(queryParams)}`;
   return new Request(finalUrl, {
     headers: new Headers(headers)
   });
-};
-
-const buildRequestHttps = (url, queryParams, headers) => {
-  const finalUrl = `${CORS_URL}${url}?${qs.stringify(queryParams)}`;
-  return new Request(finalUrl, {
-    headers: new Headers(headers)
-  });
-};
-
-export const buildRequest = (url, queryParams, headers) => {
-  const buildRequestFunction = url.startsWith('https://')
-    ? buildRequestHttps
-    : buildRequestHttps;
-  return buildRequestFunction(url, queryParams, headers);
 };
 
 export const fetchProxy = (url, queryParams = {}, headers = {}) => {
-  return fetch(buildRequest(url, queryParams, headers));
+  return fetch(buildProxyRequest(url, queryParams, headers));
 };
 
 export const fetchQuery = (endpoint, sparqlQuery) => {
