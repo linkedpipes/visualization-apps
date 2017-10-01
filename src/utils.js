@@ -2,6 +2,7 @@ import qs from 'qs';
 import N3 from 'n3';
 import jsonld from 'jsonld';
 
+const CORS_URL = 'https://cors.io/?';
 const PROXY_URL = 'https://proxy.dokku.cz';
 
 export const encodeConfig = config => btoa(JSON.stringify(config));
@@ -24,7 +25,7 @@ const buildRequestHttp = (url, queryParams, headers) => {
 };
 
 const buildRequestHttps = (url, queryParams, headers) => {
-  const finalUrl = `${url}?${qs.stringify(queryParams)}`;
+  const finalUrl = `${CORS_URL}${url}?${qs.stringify(queryParams)}`;
   return new Request(finalUrl, {
     headers: new Headers(headers)
   });
@@ -33,7 +34,7 @@ const buildRequestHttps = (url, queryParams, headers) => {
 export const buildRequest = (url, queryParams, headers) => {
   const buildRequestFunction = url.startsWith('https://')
     ? buildRequestHttps
-    : buildRequestHttp;
+    : buildRequestHttps;
   return buildRequestFunction(url, queryParams, headers);
 };
 
