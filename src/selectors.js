@@ -38,7 +38,7 @@ export const getGraph = createSelector(
 export const getFetchQuery = createSelector(
   getEndpoint,
   getGraph,
-  (endpoint, graph) => (query, params = {}) => {
+  (endpoint, graph) => (query, params = {}, context = undefined, frame = undefined, compactOptions = {}) => {
     const allParams = {
       ...params,
       endpoint,
@@ -47,6 +47,6 @@ export const getFetchQuery = createSelector(
     const sparqlQuery = typeof query === 'function'
       ? query(allParams)
       : query;
-    return fetchQuery(endpoint, sparqlQuery);
+    return fetchQuery(endpoint, sparqlQuery, context, frame, compactOptions);
   }
 );

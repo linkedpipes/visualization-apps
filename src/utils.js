@@ -22,7 +22,7 @@ export const fetchProxy = (url, queryParams = {}, headers = {}) => {
   return fetch(buildProxyRequest(url, queryParams, headers));
 };
 
-export const fetchQuery = (endpoint, sparqlQuery) => {
+export const fetchQuery = (endpoint, sparqlQuery, context = undefined, frame = undefined, compactOptions = {}) => {
   const queryParams = {
     query: sparqlQuery
   };
@@ -30,7 +30,10 @@ export const fetchQuery = (endpoint, sparqlQuery) => {
     Accept: 'application/ld+json'
   };
 
-  return fetchProxy(endpoint, queryParams, headers);
+  return fetchProxy(endpoint, queryParams, headers)
+    .then(response => response.json())
+    .then(json => frame ? jsonld.promises.frame(json, frame) : json)
+    .then(json => context ? jsonld.promises.compact(json, context, compactOptions) : json);
 };
 
 export const term = (str) => {

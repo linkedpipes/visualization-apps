@@ -13,7 +13,7 @@ import {
 
 import { getFetchQuery } from '../../../selectors';
 
-import { count, select } from '../query';
+import { count, countContext, select, selectContext } from '../query';
 
 class DataTable extends React.Component {
   constructor(props) {
@@ -22,7 +22,9 @@ class DataTable extends React.Component {
     this.state = {
       columns: [
         { name: 'id', title: 'ID' },
-        { name: 'title', title: 'Title' }
+        { name: 'title', title: 'Title' },
+        { name: 'description', title: 'Description' },
+        { name: 'created', title: 'Created' }
       ],
       rows: [],
       totalCount: 0,
@@ -43,22 +45,26 @@ class DataTable extends React.Component {
   loadCount() {
     const { fetchQuery } = this.props;
 
-    fetchQuery(count)
-      .then(response => response.json())
+    fetchQuery(count, {}, countContext)
       .then(json => this.setState({
-        totalCount: json['@graph'][0]['http://count']
+        totalCount: json['my:count']
       }));
   }
   loadPage(currentPage) {
     const { fetchQuery } = this.props;
     const { pageSize } = this.state;
 
-    fetchQuery(select, { limit: pageSize, offset: pageSize * currentPage })
-      .then(response => response.json())
+    fetchQuery(select, { limit: pageSize, offset: pageSize * currentPage }, selectContext)
+      .then((json) => {
+        console.log(json);
+        return json;
+      })
       .then(json => this.setState({
         rows: json['@graph'].map(item => ({
           id: item['@id'],
-          title: item['http://purl.org/dc/terms/title']
+          title: item['dct:title'],
+          description: item['dct:description'],
+          created: item['dct:created']
         })),
         currentPage
       }))
