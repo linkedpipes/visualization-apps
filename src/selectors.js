@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { decodeConfig, fetchQuery } from './utils';
+import { fetchQuery } from './utils';
 
 export const getConfig = state => state.config;
 

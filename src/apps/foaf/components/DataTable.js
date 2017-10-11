@@ -11,7 +11,7 @@ import {
   PagingPanel,
 } from '@devexpress/dx-react-grid-material-ui';
 
-import { getFetchQuery } from '../../../selectors';
+import { getConfig, getFetchQuery } from '../../../selectors';
 
 import { count, countContext, select, selectContext } from '../query';
 
@@ -73,6 +73,8 @@ class DataTable extends React.Component {
   render() {
     const { rows, columns, pageSize, currentPage, totalCount } = this.state;
 
+    console.log('Rendering datatable with config', this.props.config);
+
     return (
       <div style={{ position: 'relative' }}>
         <Grid
@@ -95,10 +97,12 @@ class DataTable extends React.Component {
 }
 
 DataTable.propTypes = {
+  config: PropTypes.object.isRequired,
   fetchQuery: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
+  config: getConfig(state),
   fetchQuery: getFetchQuery(state)
 });
 

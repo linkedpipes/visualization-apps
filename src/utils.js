@@ -2,6 +2,7 @@ import qs from 'qs';
 import N3 from 'n3';
 import jsonld from 'jsonld';
 
+// const PROXY_URL = 'http://localhost:4000/';
 const PROXY_URL = 'https://proxy.dokku.cz/';
 
 export const encodeConfig = config => btoa(JSON.stringify(config));
@@ -12,6 +13,8 @@ export const buildAction = (type, payload) => ({ type, payload });
 
 const buildProxyRequest = (url, queryParams, headers) => {
   const finalUrl = `${url}?${qs.stringify(queryParams)}`;
+  console.log('FINAL');
+  console.log(finalUrl);
   const proxyUrl = `${PROXY_URL}?${qs.stringify({ [finalUrl]: true })}`;
   return new Request(proxyUrl, {
     headers: new Headers(headers)
@@ -23,6 +26,7 @@ export const fetchProxy = (url, queryParams = {}, headers = {}) => {
 };
 
 export const fetchQuery = (endpoint, sparqlQuery, context = undefined, frame = undefined, compactOptions = {}) => {
+  console.log(sparqlQuery);
   const queryParams = {
     query: sparqlQuery
   };
@@ -32,8 +36,20 @@ export const fetchQuery = (endpoint, sparqlQuery, context = undefined, frame = u
 
   return fetchProxy(endpoint, queryParams, headers)
     .then(response => response.json())
+    .then((response) => {
+      console.log(JSON.stringify(response));
+      return response;
+    })
+    .then(response => Array.isArray(response) ? { '@graph': response } : response)
     .then(json => frame ? jsonld.promises.frame(json, frame) : json)
-    .then(json => context ? jsonld.promises.compact(json, context, compactOptions) : json);
+    .then(json => context ? jsonld.promises.compact(json, context, compactOptions) : json)
+    .then((response) => {
+      console.log(JSON.stringify(response));
+      return response;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 export const term = (str) => {
