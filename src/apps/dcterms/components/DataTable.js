@@ -54,7 +54,7 @@ class DataTable extends React.Component {
     const { fetchQuery } = this.props;
     const { pageSize } = this.state;
 
-    fetchQuery(select, { limit: pageSize, offset: pageSize * currentPage }, selectContext)
+    fetchQuery(select, { limit: pageSize, offset: pageSize * currentPage }, selectContext, undefined, { graph: true })
       .then((json) => {
         console.log(json);
         return json;

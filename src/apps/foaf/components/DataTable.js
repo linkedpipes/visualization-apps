@@ -47,7 +47,7 @@ class DataTable extends React.Component {
 
     fetchQuery(count, {}, countContext)
       .then(json => this.setState({
-        totalCount: json['my:count']
+        totalCount: parseInt(json['my:count'])
       }));
   }
   loadPage(currentPage) {

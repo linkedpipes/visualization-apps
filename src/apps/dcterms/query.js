@@ -26,7 +26,7 @@ WHERE {
 export const countContext = {
   '@context': {
     my: 'http://',
-    'http://count': {
+    'my:count': {
       '@type': 'http://www.w3.org/2001/XMLSchema#integer'
     }
   }

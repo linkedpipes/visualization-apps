@@ -7,6 +7,6 @@
         a sd:Dataset ;
         sd:namedGraph [
             a sd:NamedGraph ;
-            sd:name <http://graph> ;
+            sd:name <https://linked.opendata.cz/resource/ldvm/result/graph/ffedaf23-2c4b-4d4f-8697-eebd5f73e91d> ;
         ]
     ] .
