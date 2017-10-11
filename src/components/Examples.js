@@ -9,6 +9,7 @@ import { Link } from 'redux-little-router';
 }; */
 
 const dctermsExampleService = 'https://raw.githubusercontent.com/karelklima/visualisation-apps/master/public/dcterms-service.ttl';
+// const dctermsExampleService = 'http://localhost:3000/dcterms-service.ttl';
 
 const dctermsExampleHref = {
   pathname: '/dcterms',
