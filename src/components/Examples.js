@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'redux-little-router';
-import Button from 'material-ui/Button';
+
+import './Examples.css';
 
 const dctermsExampleService = 'https://raw.githubusercontent.com/karelklima/visualisation-apps/master/public/dcterms-service.ttl';
 // const dctermsExampleService = 'http://localhost:3000/dcterms-service.ttl';
@@ -22,8 +23,7 @@ const foafExampleHref = {
 };
 
 const Examples = () => (
-  <div>
-    <br /><br />
+  <div className="Examples">
     <Link href={dctermsExampleHref}>
       DCT demo
     </Link>

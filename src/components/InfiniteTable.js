@@ -98,9 +98,6 @@ export default class InfiniteTable extends PureComponent {
 
   customRowRenderer(props) {
     const { index, className, key, style } = props;
-    const { rows } = this.state;
-
-    console.log(props);
 
     if (!this.isRowLoaded({ index })) {
       return (

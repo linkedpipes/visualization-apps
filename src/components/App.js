@@ -10,7 +10,6 @@ import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
-import Grid from 'material-ui/Grid';
 
 import GitHub from './GitHub';
 import Config from './Config';
@@ -53,6 +52,7 @@ const App = ({ classes, title, Component, endpoint, appLoaded }) => (
       </Toolbar>
     </AppBar>
     <main>
+      {appLoaded && endpoint ? (<Config />) : null}
       {appLoaded && endpoint ? (<Component />) : null}
       {appLoaded && !endpoint ? (<Examples />) : null}
     </main>

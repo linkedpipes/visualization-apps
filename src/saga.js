@@ -38,9 +38,11 @@ function* loadConfig() {
     yield put(buildAction('SET_CONFIG', serviceConfig));
   } else {
     console.log('Service spec not found');
+    yield put(buildAction('SET_CONFIG', { endpoint: undefined }));
   }
 
   yield put(buildAction('APP_LOADED', true));
+  console.log('App loaded');
 }
 
 export default function* saga() {
