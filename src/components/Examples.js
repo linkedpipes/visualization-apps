@@ -1,18 +1,12 @@
 import React from 'react';
 import { Link } from 'redux-little-router';
+import Button from 'material-ui/Button';
 
-// import { encodeConfig } from '../utils';
-
-/* const dctermsExampleConfig = {
-  endpoint: 'https://linked.opendata.cz/sparql',
-  graph: 'http://linked.opendata.cz/resource/dataset/legislation/cz/uz'
-}; */
-
-// const dctermsExampleService = 'https://raw.githubusercontent.com/karelklima/visualisation-apps/master/public/dcterms-service.ttl';
-const dctermsExampleService = 'http://localhost:3000/dcterms-service.ttl';
+const dctermsExampleService = 'https://raw.githubusercontent.com/karelklima/visualisation-apps/master/public/dcterms-service.ttl';
+// const dctermsExampleService = 'http://localhost:3000/dcterms-service.ttl';
 
 const dctermsExampleHref = {
-  pathname: '/dcterms',
+  pathname: '/dct',
   query: {
     service: dctermsExampleService
   }
@@ -29,8 +23,9 @@ const foafExampleHref = {
 
 const Examples = () => (
   <div>
+    <br /><br />
     <Link href={dctermsExampleHref}>
-      DCTerms demo
+      DCT demo
     </Link>
     <br /><br />
     <Link href={foafExampleHref}>

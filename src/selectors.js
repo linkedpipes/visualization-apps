@@ -25,6 +25,11 @@ export const getComponent = createSelector(
   state => state.component
 );
 
+export const getAppLoaded = createSelector(
+  getConfig,
+  state => state.appLoaded
+);
+
 export const getEndpoint = createSelector(
   getConfig,
   state => state.endpoint
@@ -38,7 +43,7 @@ export const getGraph = createSelector(
 export const getFetchQuery = createSelector(
   getEndpoint,
   getGraph,
-  (endpoint, graph) => (query, params = {}, context = undefined, frame = undefined, compactOptions = {}) => {
+  (endpoint, graph) => ({ query, params = {}, context = undefined, frame = undefined, compactOptions = {} }) => {
     const allParams = {
       ...params,
       endpoint,

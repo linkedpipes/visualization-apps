@@ -1,12 +1,12 @@
 @prefix sd: <http://www.w3.org/ns/sparql-service-description#> .
 <http://dereference.uri/my/sparql/service> a sd:Service ;
-    sd:endpoint <https://discovery.visualization.linkedpipes.com/sparql> ;
+    sd:endpoint <https://linked.opendata.cz/sparql> ;
     sd:supportedLanguage sd:SPARQL11Query ;
     sd:resultFormat <http://www.w3.org/ns/formats/RDF_XML>, <http://www.w3.org/ns/formats/Turtle> ;
     sd:defaultDataset [
         a sd:Dataset ;
         sd:namedGraph [
             a sd:NamedGraph ;
-            sd:name <https://linked.opendata.cz/resource/ldvm/result/graph/ffedaf23-2c4b-4d4f-8697-eebd5f73e91d> ;
+            sd:name <http://linked.opendata.cz/resource/dataset/legislation/cz/uz> ;
         ]
     ] .

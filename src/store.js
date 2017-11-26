@@ -29,10 +29,11 @@ const baseReducerSpec = {
   router: router.reducer
 };
 
-const reducerSpec = Object.keys(apps).reduce((spec, key) => ({
+/*const reducerSpec = Object.keys(apps).reduce((spec, key) => ({
   ...spec,
   [key]: apps[key].reducer
-}), baseReducerSpec);
+}), baseReducerSpec);*/
+const reducerSpec = baseReducerSpec;
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

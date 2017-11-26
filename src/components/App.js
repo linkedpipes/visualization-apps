@@ -16,7 +16,7 @@ import GitHub from './GitHub';
 import Config from './Config';
 import Examples from './Examples';
 
-import { getTitle, getComponent, getEndpoint } from '../selectors';
+import { getTitle, getComponent, getEndpoint, getAppLoaded } from '../selectors';
 
 import './App.css';
 
@@ -28,13 +28,10 @@ const styles = () => ({
     fontWeight: '500',
     textDecoration: 'none',
     color: '#fff'
-  },
-  main: {
-    padding: '40px'
   }
 });
 
-const App = ({ classes, title, Component, endpoint }) => (
+const App = ({ classes, title, Component, endpoint, appLoaded }) => (
   <div className="App">
     <Helmet>
       <title>{title}</title>
@@ -43,7 +40,7 @@ const App = ({ classes, title, Component, endpoint }) => (
       <Toolbar>
         <Typography type="title" color="inherit" className={classes.flex}>
           <Link href="/" className={classes.logo}>
-            Visualization Apps
+            {title}
           </Link>
         </Typography>
         <IconButton
@@ -55,25 +52,9 @@ const App = ({ classes, title, Component, endpoint }) => (
         </IconButton>
       </Toolbar>
     </AppBar>
-    <main className={classes.main}>
-      <Grid container spacing={24}>
-        {endpoint ? (
-          <Grid container spacing={24}>
-            <Grid item xs={12}>
-              <Config />
-            </Grid>
-            <Grid item xs={12}>
-              <Component />
-            </Grid>
-          </Grid>
-        ) : (
-          <Grid container spacing={24}>
-            <Grid item xs={12}>
-              <Examples />
-            </Grid>
-          </Grid>
-        )}
-      </Grid>
+    <main>
+      {appLoaded && endpoint ? (<Component />) : null}
+      {appLoaded && !endpoint ? (<Examples />) : null}
     </main>
   </div>
 );
@@ -81,17 +62,20 @@ const App = ({ classes, title, Component, endpoint }) => (
 App.propTypes = {
   classes: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
+  appLoaded: PropTypes.bool.isRequired,
   endpoint: PropTypes.string,
   Component: PropTypes.func.isRequired,
 };
 
 App.defaultProps = {
+  appLoaded: false,
   endpoint: undefined,
   graph: undefined
 };
 
 const mapStateToProps = state => ({
   title: getTitle(state),
+  appLoaded: getAppLoaded(state),
   endpoint: getEndpoint(state),
   Component: getComponent(state)
 });

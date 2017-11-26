@@ -1,0 +1,43 @@
+.InfiniteTable {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 0 25px;
+}
+
+.TableStats {
+  text-align: right;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #999;
+  font-size: 12px;
+  height: 40px;
+  line-height: 40px;
+  padding: 5px 10px 0;
+}
+
+.TableContainer {
+  flex: 1 1 auto;
+}
+
+.Table {
+  width: 100%;
+  margin-top: 15px;
+}
+
+.ReactVirtualized__Table__row, .ReactVirtualized__Table__headerRow {
+  border-bottom: 1px solid #ddd;
+}
+
+.noRows {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  color: #bdbdbd;
+}

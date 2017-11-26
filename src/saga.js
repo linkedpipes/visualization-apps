@@ -4,15 +4,7 @@ import { LOCATION_CHANGED } from 'redux-little-router';
 import { fetchRDF, buildAction } from './utils';
 import { getService } from './selectors';
 
-function* loadConfig() {
-  console.log('LOADING');
-  const service = yield select(getService);
-
-  if (!service) {
-    console.log('Service spec not found');
-    return;
-  }
-
+function* fetchServiceConfig(service) {
   const contextSpec = {
     sd: 'http://www.w3.org/ns/sparql-service-description#',
     endpoint: { '@id': 'http://www.w3.org/ns/sparql-service-description#endpoint', '@type': '@id' },
@@ -32,9 +24,23 @@ function* loadConfig() {
     '@context': contextSpec
   };
 
-  const serviceConfig = yield call(fetchRDF, service, context, frame);
+  return yield call(fetchRDF, service, context, frame);
+}
 
-  yield put(buildAction('SET_CONFIG', serviceConfig));
+function* loadConfig() {
+  yield put(buildAction('APP_LOADED', false));
+
+  console.log('Loading Config');
+  const service = yield select(getService);
+
+  if (service) {
+    const serviceConfig = yield call(fetchServiceConfig, service);
+    yield put(buildAction('SET_CONFIG', serviceConfig));
+  } else {
+    console.log('Service spec not found');
+  }
+
+  yield put(buildAction('APP_LOADED', true));
 }
 
 export default function* saga() {

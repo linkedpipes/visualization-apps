@@ -10,7 +10,7 @@ import { getInteger, stringRenderer } from '../../dataUtils';
 
 import { count, countContext, select, selectContext } from './query';
 
-const FOAF = ({ fetchQuery }) => {
+const DCT = ({ fetchQuery }) => {
   const loadCount = () => fetchQuery({ query: count, context: countContext })
     .then(json => getInteger(json['my:count']));
 
@@ -33,29 +33,29 @@ const FOAF = ({ fetchQuery }) => {
         width={80}
       />
       <InfiniteColumn
-        label="Name"
-        dataKey="foaf:name"
+        label="Title"
+        dataKey="dct:title"
         cellRenderer={stringRenderer}
         width={200}
       />
       <InfiniteColumn
-        label="Mbox"
-        dataKey="foaf:mbox"
-        cellRenderer={stringRenderer}
-        width={200}
-      />
-      <InfiniteColumn
-        label="Homepage"
-        dataKey="foaf:homepage"
+        label="Description"
+        dataKey="dct:description"
         cellRenderer={stringRenderer}
         width={200}
         flexGrow={1}
+      />
+      <InfiniteColumn
+        label="Created"
+        dataKey="dct:created"
+        cellRenderer={stringRenderer}
+        width={150}
       />
     </InfiniteTable>
   );
 };
 
-FOAF.propTypes = {
+DCT.propTypes = {
   fetchQuery: PropTypes.func.isRequired
 };
 
@@ -63,4 +63,4 @@ const mapStateToProps = state => ({
   fetchQuery: getFetchQuery(state)
 });
 
-export default connect(mapStateToProps)(FOAF);
+export default connect(mapStateToProps)(DCT);
