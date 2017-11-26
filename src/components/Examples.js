@@ -3,33 +3,25 @@ import { Link } from 'redux-little-router';
 
 import './Examples.css';
 
-const dctermsExampleService = 'https://raw.githubusercontent.com/karelklima/visualisation-apps/master/public/dcterms-service.ttl';
-// const dctermsExampleService = 'http://localhost:3000/dcterms-service.ttl';
-
-const dctermsExampleHref = {
-  pathname: '/dcterms',
+const generateHref = app => ({
+  pathname: `/${app}`,
   query: {
-    service: dctermsExampleService
+    service: `https://raw.githubusercontent.com/karelklima/visualisation-apps/master/public/${app}-service.ttl`
   }
-};
-
-const foafExampleService = 'https://raw.githubusercontent.com/karelklima/visualisation-apps/master/public/foaf-service.ttl';
-
-const foafExampleHref = {
-  pathname: '/foaf',
-  query: {
-    service: foafExampleService
-  }
-};
+});
 
 const Examples = () => (
   <div className="Examples">
-    <Link href={dctermsExampleHref}>
-      DCT demo
+    <Link href={generateHref('dcterms')}>
+      Dublin Core Terms demo [datatable]
     </Link>
     <br /><br />
-    <Link href={foafExampleHref}>
-      FOAF demo
+    <Link href={generateHref('foaf')}>
+      Friend of a Friend demo [datatable]
+    </Link>
+    <br /><br />
+    <Link href={generateHref('tv')}>
+      Things and Values demo [bubble chart]
     </Link>
   </div>
 );
