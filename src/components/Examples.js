@@ -7,7 +7,7 @@ const dctermsExampleService = 'https://raw.githubusercontent.com/karelklima/visu
 // const dctermsExampleService = 'http://localhost:3000/dcterms-service.ttl';
 
 const dctermsExampleHref = {
-  pathname: '/dct',
+  pathname: '/dcterms',
   query: {
     service: dctermsExampleService
   }

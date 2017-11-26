@@ -2,6 +2,6 @@ import dct from './dct';
 import foaf from './foaf';
 
 export default {
-  dct,
+  dcterms: dct,
   foaf
 };
