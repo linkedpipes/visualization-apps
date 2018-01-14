@@ -1,12 +1,16 @@
 import React from 'react';
 import { Link } from 'redux-little-router';
 
+import { isLocalhost } from '../utils';
+
 import './Examples.css';
 
 const generateHref = app => ({
   pathname: `/${app}`,
   query: {
-    service: `https://raw.githubusercontent.com/karelklima/visualisation-apps/master/public/${app}-service.ttl`
+    service: isLocalhost()
+      ? `/${app}-service.ttl`
+      : `https://raw.githubusercontent.com/karelklima/visualisation-apps/master/public/${app}-service.ttl`
   }
 });
 

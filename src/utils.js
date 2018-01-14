@@ -11,6 +11,8 @@ export const decodeConfig = configString => JSON.parse(atob(configString));
 
 export const buildAction = (type, payload) => ({ type, payload });
 
+export const isLocalhost = () => document.location.href.startsWith('http://localhost');
+
 const buildProxyRequest = (url, queryParams, headers) => {
   const finalUrl = `${url}?${qs.stringify(queryParams)}`;
   const proxyUrl = `${PROXY_URL}?${qs.stringify({ [finalUrl]: true })}`;

@@ -1,56 +1,57 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Async from 'react-promise';
 import { connect } from 'react-redux';
 
-import InfiniteTable from '../../components/InfiniteTable';
-import InfiniteColumn from '../../components/InfiniteColumn';
-
 import { getFetchQuery } from '../../selectors';
-import { getInteger, stringRenderer } from '../../dataUtils';
 
-import { count, countContext, select, selectContext } from './query';
+import BubbleChart from '../../components/BubbleChart';
 
-const DCT = ({ fetchQuery }) => {
-  const loadCount = () => fetchQuery({ query: count, context: countContext })
-    .then(json => getInteger(json['my:count']));
+import { select, selectContext } from './query';
 
-  const loadRows = ({ startIndex, stopIndex }) => fetchQuery({
+const log = (value) => { console.log(value); return value; };
+
+const TV = ({ fetchQuery }) => {
+  const data = fetchQuery({
     query: select,
-    params: { limit: stopIndex - startIndex + 1, offset: startIndex },
+    params: { limit: 100 },
     context: selectContext,
     compactOptions: { graph: true }
   })
-    .then(json => json['@graph'])
-    .then(json => { console.log(json); return json; });
+    .then(log)
+    .then(json => json['@graph'].map((entry, index) => ({
+      id: index + 1,
+      xid: entry['@id'],
+      title: entry['dct:title'],
+      size: entry['rdf:value']
+    })))
+    .then(log);
+
+
+  const dataTest = [
+    { id: 1,
+      title: 'oneField',
+      size: 150,
+      g: 80
+    },
+    { id: 2,
+      title: 'Teaser',
+      size: 30,
+      g: 50
+    },
+    { id: 3,
+      title: 'Crazy',
+      size: 70,
+      g: 80
+    }
+  ];
 
   return (
-    <InfiniteTable
-      loadCount={loadCount}
-      loadRows={loadRows}
-    >
-      <InfiniteColumn
-        label="Index"
-        dataKey="index"
-        width={80}
-      />
-      <InfiniteColumn
-        label="Title"
-        dataKey="dct:title"
-        cellRenderer={stringRenderer}
-        width={200}
-      />
-      <InfiniteColumn
-        label="Value"
-        dataKey="rdf:value"
-        cellRenderer={stringRenderer}
-        width={200}
-        flexGrow={1}
-      />
-    </InfiniteTable>
+    <Async promise={data} then={value => <BubbleChart data={value} width={800} height={800} />} />
   );
 };
 
-DCT.propTypes = {
+TV.propTypes = {
   fetchQuery: PropTypes.func.isRequired
 };
 
@@ -58,4 +59,4 @@ const mapStateToProps = state => ({
   fetchQuery: getFetchQuery(state)
 });
 
-export default connect(mapStateToProps)(DCT);
+export default connect(mapStateToProps)(TV);
