@@ -190,7 +190,7 @@ export default class InfiniteTable extends PureComponent {
 }
 
 InfiniteTable.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.array.isRequired,
   loadCount: PropTypes.func.isRequired,
   loadRows: PropTypes.func.isRequired
 };

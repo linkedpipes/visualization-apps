@@ -1,0 +1,9 @@
+.Service {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+.Service .status {
+  padding-top: 30vh;
+  text-align: center;
+}

@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import InfiniteTable from '../../components/InfiniteTable';
 import InfiniteColumn from '../../components/InfiniteColumn';
 
-import { getFetchQuery } from '../../selectors';
 import { getInteger, stringRenderer } from '../../dataUtils';
 
 import { count, countContext, select, selectContext } from './query';
@@ -59,8 +57,4 @@ DCT.propTypes = {
   fetchQuery: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  fetchQuery: getFetchQuery(state)
-});
-
-export default connect(mapStateToProps)(DCT);
+export default DCT;
