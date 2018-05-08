@@ -1,10 +1,9 @@
 import N3 from 'n3';
 import jsonld from 'jsonld';
 import { connect } from 'react-refetch';
-import urlJoin from 'url-join';
 
-// const PROXY_URL = 'http://localhost:4000/';
-const PROXY_URL = 'https://proxy.dokku.cz/';
+// const PROXY_URL = 'http://localhost:4000/?';
+const PROXY_URL = 'https://proxy.dokku.cz/?';
 
 export const encodeConfig = config => btoa(JSON.stringify(config));
 
@@ -107,7 +106,7 @@ export const connectProxy = connect.defaults({
     }
 
     const url = mapping.url.startsWith('http')
-      ? urlJoin(PROXY_URL, mapping.url)
+      ? `${PROXY_URL}${mapping.url}`
       : mapping.url;
 
     return new Request(url, options);

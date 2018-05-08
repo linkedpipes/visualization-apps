@@ -29,10 +29,6 @@ const routes = [
   }
 ];
 
-
-
-console.log(routes);
-
 const Router = () => (
   <BrowserRouter>
     <Switch>
