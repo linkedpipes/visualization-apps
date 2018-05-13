@@ -5,7 +5,7 @@ import map from './map';
 import timeline from './timeline';
 
 export default {
-  dcterms: dct,
+  dct,
   foaf,
   tv,
   map,
