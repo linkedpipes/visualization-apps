@@ -7,6 +7,7 @@ import Loading from '../../components/Loading';
 
 import { connect, handleRDF, buildQuery } from '../../connect';
 import { getFloat, getString } from '../../dataUtils';
+import { log, filterUndefined } from '../../utils';
 
 import { select, context } from './query';
 
@@ -51,6 +52,7 @@ const MAP = ({ data }) => {
   }
 
   console.log(data.value);
+  console.log(data.value[0]);
 
   const firstBounds = data.value[0] ? data.value[0].position : [0, 0];
   const bounds = latLngBounds(firstBounds);
@@ -82,15 +84,26 @@ const MAP = ({ data }) => {
 
 const handle = response =>
   handleRDF({ context, compactOptions: { graph: true } })(response)
-    .then(json => json['@graph'].map((entry, index) => ({
-      key: index,
-      position: [
-        getFloat(entry['schema:latitude']),
-        getFloat(entry['schema:longitude'])
-      ],
-      id: entry['@id'],
-      title: getString(entry['dct:title'])
-    })));
+    .then(log)
+    .then(json => json['@graph'].map((entry, index) => {
+      try {
+        return {
+          key: index,
+          position: [
+            getFloat(entry['schema:latitude']),
+            getFloat(entry['schema:longitude'])
+          ],
+          id: entry['@id'],
+          title: getString(entry['dct:title'])
+        };
+      }
+      catch (e) {
+        console.error('Invalid data entry');
+        console.error(entry);
+        console.error(e);
+      }
+    }))
+    .then(filterUndefined);
 
 const requests = () => ({
   data: buildQuery(select)

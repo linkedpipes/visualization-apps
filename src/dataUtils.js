@@ -1,25 +1,60 @@
-export const getInteger = (jsonldValue) => {
-  const source = jsonldValue['@value'] !== undefined
-    ? jsonldValue['@value']
-    : jsonldValue;
-  return parseInt(source, 10);
+const configuration = {
+  language: 'en'
 };
 
-export const getFloat = (jsonldValue) => {
-  const source = jsonldValue['@value'] !== undefined
-    ? jsonldValue['@value']
-    : jsonldValue;
-  return parseFloat(source);
-};
+export const setLanguage = language => {
+  configuration.language = language;
+  console.log(`Data configuration:
+  Language: ${language}`);
+}
+
+const getValueFromArray = jsonldArray => {
+  const candidate = jsonldArray.find(
+    entry => entry['@language'] === configuration.language
+  );
+  return candidate
+    ? candidate
+    : jsonldArray[0];
+}
+
+const getValue = jsonldValue => {
+  if (Array.isArray(jsonldValue)) {
+    jsonldValue = getValueFromArray(jsonldValue);
+  }
+  if (jsonldValue !== undefined && jsonldValue['@value'] !== undefined) {
+    return jsonldValue['@value'];
+  }
+  return jsonldValue;
+}
+
+export const parseNumber = (parseFunction, jsonldValue) => {
+  const source = getValue(jsonldValue)
+  const result = parseFunction(source);
+  if (isNaN(result)) {
+    throw Error('A value is not a number');
+  }
+  return result;
+}
+
+export const getInteger = (jsonldValue) =>
+  parseNumber(parseInt, jsonldValue);
+
+export const getFloat = (jsonldValue) =>
+  parseNumber(parseFloat, jsonldValue);
 
 export const getString = (jsonldValue) => {
-  if (jsonldValue === undefined) {
-    return '';
+  const source = getValue(jsonldValue);
+  if (source === undefined) {
+    throw Error('A value is not a string');
   }
-  if (typeof jsonldValue === 'object' && jsonldValue['@value'] !== undefined) {
-    return String(jsonldValue['@value']);
-  }
-  return String(jsonldValue);
+  return String(source);
 };
 
-export const stringRenderer = ({ cellData }) => getString(cellData);
+export const stringRenderer = ({ cellData }) => {
+  try {
+    return getString(cellData);
+  }
+  catch (e) {
+    return String();
+  }
+}
