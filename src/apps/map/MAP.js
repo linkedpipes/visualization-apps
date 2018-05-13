@@ -1,5 +1,6 @@
 import React from 'react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { latLngBounds } from 'leaflet'
 
 import Screen from '../../components/Screen';
 import Loading from '../../components/Loading';
@@ -51,6 +52,10 @@ const MAP = ({ data }) => {
 
   console.log(data.value);
 
+  const firstBounds = data.value[0] ? data.value[0].position : [0, 0];
+  const bounds = latLngBounds(firstBounds);
+  data.value.forEach(entry => bounds.extend(entry.position));
+
   const markers = data.value.map((entry) => (
     <Marker key={entry.key} position={entry.position}>
       <Popup>
@@ -64,7 +69,7 @@ const MAP = ({ data }) => {
 
   return (
     <div className="MAP">
-      <Map center={[0, 0]} zoom={2}>
+      <Map zoom={12} bounds={bounds}>
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
