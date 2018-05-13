@@ -1,0 +1,16 @@
+.MAP {
+  flex: 1 1 auto;
+  display: flex;
+  position: relative;
+}
+.leaflet-container {
+  flex: 1 1 auto;
+  display: block;
+}
+.leaflet-popup-content strong {
+  display: block;
+  font-size: 14px;
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 4px;
+}

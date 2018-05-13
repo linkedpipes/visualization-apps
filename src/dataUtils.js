@@ -5,6 +5,13 @@ export const getInteger = (jsonldValue) => {
   return parseInt(source, 10);
 };
 
+export const getFloat = (jsonldValue) => {
+  const source = jsonldValue['@value'] !== undefined
+    ? jsonldValue['@value']
+    : jsonldValue;
+  return parseFloat(source);
+};
+
 export const getString = (jsonldValue) => {
   if (jsonldValue === undefined) {
     return '';

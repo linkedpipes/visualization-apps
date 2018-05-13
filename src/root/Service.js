@@ -1,5 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import Screen from '../components/Screen';
+import Loading from '../components/Loading';
+
 import { connect, handleRDF, setConfiguration } from '../connect';
 
 import './Service.css';
@@ -26,19 +30,18 @@ const context = {
 const renderStatus = ({ serviceFetch, component: Component }) => {
   if (serviceFetch.pending) {
     return (
-      <div className="status">
-        <h1>Fetching service configuration...</h1>
-        <h2>It might take a minute to load</h2>
-      </div>
+      <Screen>
+        <Loading/>
+      </Screen>
     );
   }
   if (serviceFetch.rejected) {
     console.error(serviceFetch.reason);
     return (
-      <div className="status">
+      <Screen>
         <h1>Unable to fetch service configuration</h1>
         <h2>{serviceFetch.reason.toString()}</h2>
-      </div>
+      </Screen>
     );
   }
   if (serviceFetch.fulfilled) {
