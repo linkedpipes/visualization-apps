@@ -21,7 +21,9 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
     "react-virtualized": "^9.18.5",
-    "reselect": "^3.0.1"
+    "react-visjs-timeline": "^1.5.0",
+    "reselect": "^3.0.1",
+    "vis": "^4.21.0"
   },
   "scripts": {
     "start": "react-scripts start",

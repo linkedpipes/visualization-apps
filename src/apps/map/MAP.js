@@ -102,6 +102,7 @@ const handle = response =>
         console.error(entry);
         console.error(e);
       }
+      return undefined;
     }))
     .then(filterUndefined);
 

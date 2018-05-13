@@ -1,0 +1,40 @@
+.TIMELINE {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* align items in Main Axis */
+  align-items: stretch; /* align items in Cross Axis */
+  align-content: stretch; /* Extra space in Cross Axis */
+}
+.TIMELINE > div {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  
+  justify-content: flex-start; /* align items in Main Axis */
+  align-items: stretch; /* align items in Cross Axis */
+  align-content: stretch; /* Extra space in Cross Axis */
+}
+
+.vis-timeline.vis-bottom, .vis-content, .vis-labelset, .vis-itemset {
+  flex: 1 !important;
+  visibility: visible !important;
+  background: #e8e8e8;
+}
+.vis-item.vis-box {
+  background: #fff;
+  border: 0;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+}
+.vis-item.vis-line, .vis-item.vis-dot {
+  border-color: #999;
+}
+.vis-item .vis-item-content {
+  padding: 8px;
+}
+.title {
+  font-size: 16px;
+}
+.date {
+  font-size: 14px;
+}
