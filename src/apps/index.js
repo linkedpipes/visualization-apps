@@ -5,5 +5,5 @@ import tv from './tv';
 export default {
   dcterms: dct,
   foaf,
-  tv
+  tv,
 };

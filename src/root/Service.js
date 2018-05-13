@@ -1,16 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connectServiceConfig } from '../fetch';
-import { fetchQuery } from '../utils';
+import { connect, handleRDF, setConfiguration } from '../connect';
 
 import './Service.css';
 
-/*<Typography type="body1" component="p">
-      Endpoint: {endpoint}
-    </Typography>
-    <Typography type="body1" component="p">
-      Graph: {graph}
-    </Typography>*/
+const contextSpec = {
+  sd: 'http://www.w3.org/ns/sparql-service-description#',
+  endpoint: { '@id': 'http://www.w3.org/ns/sparql-service-description#endpoint', '@type': '@id' },
+  resultFormat: { '@id': 'http://www.w3.org/ns/sparql-service-description#resultFormat', '@type': '@id' },
+  supportedLanguage: { '@id': 'http://www.w3.org/ns/sparql-service-description#supportedLanguage', '@type': '@id' },
+  defaultDataset: { '@id': 'http://www.w3.org/ns/sparql-service-description#defaultDataset', '@type': '@id' },
+  name: { '@id': 'http://www.w3.org/ns/sparql-service-description#name', '@type': '@id' },
+  namedGraph: { '@id': 'http://www.w3.org/ns/sparql-service-description#namedGraph', '@type': '@id' }
+};
+
+const frame = {
+  '@context': contextSpec,
+  '@type': 'http://www.w3.org/ns/sparql-service-description#Service'
+};
+
+const context = {
+  '@context': contextSpec
+};
 
 const renderStatus = ({ serviceFetch, component: Component }) => {
   if (serviceFetch.pending) {
@@ -31,22 +42,7 @@ const renderStatus = ({ serviceFetch, component: Component }) => {
     );
   }
   if (serviceFetch.fulfilled) {
-    const endpoint = serviceFetch.value.endpoint;
-    const graph = serviceFetch.value.defaultDataset.namedGraph.name;
-    console.log('Endpoint: ', endpoint);
-    console.log('Graph: ', graph);
-    const fetchQueryHelper = ({ query, params = {}, context = undefined, frame = undefined, compactOptions = {} }) => {
-      const allParams = {
-        ...params,
-        endpoint,
-        graph
-      };
-      const sparqlQuery = typeof query === 'function'
-        ? query(allParams)
-        : query;
-      return fetchQuery(endpoint, sparqlQuery, context, frame, compactOptions);
-    };
-    return <Component fetchQuery={fetchQueryHelper}/>;
+    return <Component />;
   }
 }
 
@@ -62,7 +58,17 @@ Service.propTypes = {
   serviceFetch: PropTypes.object.isRequired
 };
 
-const toFetch = ({ location }) => {
+const handle = response =>
+  handleRDF({ context, frame })(response)
+    .then(value => {
+      setConfiguration({
+        endpoint: value.endpoint,
+        graph: value.defaultDataset.namedGraph.name
+      });
+      return value;
+    });
+
+const requests = ({ location }) => {
   const params = new URLSearchParams(location.search);
   const serviceUrl = params.get('service');
   return {
@@ -70,4 +76,4 @@ const toFetch = ({ location }) => {
   };
 }
 
-export default connectServiceConfig(toFetch)(Service);
+export default connect(handle)(requests)(Service);

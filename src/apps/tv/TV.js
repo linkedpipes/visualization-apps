@@ -1,36 +1,34 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import Async from 'react-promise';
+
+import { connect, handleRDF, buildQuery } from '../../connect';
+import { getInteger, getString } from '../../dataUtils';
 
 import BubbleChart from '../../components/BubbleChart';
 
-import { select, selectContext } from './query';
+import { select, context } from './query';
 
-const log = (value) => { console.log(value); return value; };
+const TV = ({ data }) => {
+  if (data.rejected) {
+    return "Unable to load data";
+  }
+  if (!data.fulfilled) {
+    return "Loading";
+  }
+  console.log(data.value);
+  return <BubbleChart data={data.value} width={800} height={800} />;
+}
 
-const TV = ({ fetchQuery }) => {
-  const data = fetchQuery({
-    query: select,
-    params: { limit: 100 },
-    context: selectContext,
-    compactOptions: { graph: true }
-  })
-    .then(log)
+const handle = response =>
+  handleRDF({ context, compactOptions: { graph: true } })(response)
     .then(json => json['@graph'].map((entry, index) => ({
       id: index + 1,
       xid: entry['@id'],
-      title: entry['dct:title'],
-      size: entry['rdf:value']
-    })))
-    .then(log);
+      title: getString(entry['dct:title']),
+      size: getInteger(entry['rdf:value'])
+    })));
 
-  return (
-    <Async promise={data} then={value => <BubbleChart data={value} width={800} height={800} />} />
-  );
-};
+const requests = () => ({
+  data: buildQuery(select({ limit: 100 }))
+});
 
-TV.propTypes = {
-  fetchQuery: PropTypes.func.isRequired
-};
-
-export default TV;
+export default connect(handle)(requests)(TV);

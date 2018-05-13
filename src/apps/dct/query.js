@@ -29,7 +29,7 @@ export const countContext = {
   }
 };
 
-export const select = ({ graph, limit = 10, offset = 0 }) => `
+export const select = ({ limit = 10, offset = 0 }) => ({ graph }) => `
 PREFIX dct: <http://purl.org/dc/terms/>
 CONSTRUCT {
   ?resource dct:title ?title ;

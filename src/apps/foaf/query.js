@@ -28,7 +28,7 @@ export const countContext = {
   }
 };
 
-export const select = ({ graph, limit = 10, offset = 0 }) => `
+export const select = ({ limit = 10, offset = 0 }) => ({ graph }) => `
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 CONSTRUCT {
   ?resource foaf:name ?name ;
