@@ -54,11 +54,11 @@ const buildDate = date => {
   return `<a title=${date}>${friendly}</a>`;
 }
 
-const buildContent = ({ id, title, start, end }) => {
+const buildContent = ({ id, name, start, end }) => {
   const html = [];
-  html.push(`<div class="title"><a href=${id} target="_blank">`);
-  if (title) {
-    html.push(title);
+  html.push(`<div class="title"><a href=${id} title=${id} target="_blank">`);
+  if (name) {
+    html.push(name);
   } else {
     html.push(id);
   }
@@ -78,7 +78,7 @@ const handle = response =>
     .then(log)
     .then(map({
       id: { key: '@id' },
-      title: { key: 'dct:title', optional: true },
+      name: { key: 'dct:title', optional: true },
       date: { key: 'dct:date', optional: true },
       start: { key: 'schema:startDate', optional: true },
       end: { key: 'schema:endDate', optional: true }
