@@ -101,3 +101,6 @@ export const connect = (handleResponse = handleJson) => refetch.defaults({
   buildRequest,
   handleResponse
 });
+
+export const getDescribeUrl = uri =>
+  buildQuery(`DESCRIBE ${uri}`);

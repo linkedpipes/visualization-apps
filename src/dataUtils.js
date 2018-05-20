@@ -58,3 +58,41 @@ export const stringRenderer = ({ cellData }) => {
     return String();
   }
 }
+
+const getTypedValue = (value, { parser = getString, optional = false }) => {
+  return value === undefined && optional
+    ? undefined
+    : parser(value);
+}
+
+const filterUndefined = value =>
+  value.filter(entry => entry !== undefined);
+
+export const map = (options = {}) => input =>
+  Promise.resolve(input)
+    .then(input => {
+      if (input['@graph']) {
+        input = input['@graph'];
+      }
+      return input.map((entry, index) => {
+        try {
+          const mappedEntry = { key: index };
+          Object.keys(options).forEach(optionKey => {
+            const option = options[optionKey];
+            const value = getTypedValue(entry[option.key], option);
+            if (value !== undefined) {
+              mappedEntry[optionKey] = value;
+            }
+          });
+          console.warn(mappedEntry);
+          return mappedEntry;
+        }
+        catch (e) {
+          console.error('Invalid data entry');
+          console.error(entry);
+          console.error(e);
+        }
+        return undefined;
+      })
+    })
+    .then(filterUndefined);

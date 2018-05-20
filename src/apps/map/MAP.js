@@ -5,8 +5,8 @@ import { latLngBounds } from 'leaflet'
 import Screen from '../../components/Screen';
 import Loading from '../../components/Loading';
 
-import { connect, handleRDF, buildQuery } from '../../connect';
-import { getFloat, getString } from '../../dataUtils';
+import { connect, handleRDF, buildQuery, getDescribeUrl } from '../../connect';
+import { getFloat, getString, map } from '../../dataUtils';
 import { log, filterUndefined } from '../../utils';
 
 import { select, context } from './query';
@@ -52,7 +52,6 @@ const MAP = ({ data }) => {
   }
 
   console.log(data.value);
-  console.log(data.value[0]);
 
   const firstBounds = data.value[0] ? data.value[0].position : [0, 0];
   const bounds = latLngBounds(firstBounds);
@@ -63,7 +62,9 @@ const MAP = ({ data }) => {
       <Popup>
         <div>
           {entry.title && <strong>{entry.title}</strong>}
-          <span>{entry.id}</span>
+          <a href={entry.id} target="_blank">
+            <span>{entry.id}</span>
+          </a>
         </div>
       </Popup>
     </Marker>
@@ -85,26 +86,19 @@ const MAP = ({ data }) => {
 const handle = response =>
   handleRDF({ context, compactOptions: { graph: true } })(response)
     .then(log)
-    .then(json => json['@graph'].map((entry, index) => {
-      try {
-        return {
-          key: index,
-          position: [
-            getFloat(entry['schema:latitude']),
-            getFloat(entry['schema:longitude'])
-          ],
-          id: entry['@id'],
-          title: getString(entry['dct:title'])
-        };
-      }
-      catch (e) {
-        console.error('Invalid data entry');
-        console.error(entry);
-        console.error(e);
-      }
-      return undefined;
+    .then(map({
+      id: { key: '@id' },
+      latitude: { key: 'schema:latitude', parser: getFloat },
+      longitude: { key: 'schema:longitude', parser: getFloat },
+      title: { key: 'dct:title', optional: true }
     }))
-    .then(filterUndefined);
+    .then(entries => entries.map((entry) => ({
+      ...entry,
+      position: [
+        entry.latitude,
+        entry.longitude
+      ]
+    })));
 
 const requests = () => ({
   data: buildQuery(select)
