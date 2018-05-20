@@ -5,9 +5,9 @@ import { latLngBounds } from 'leaflet'
 import Screen from '../../components/Screen';
 import Loading from '../../components/Loading';
 
-import { connect, handleRDF, buildQuery, getDescribeUrl } from '../../connect';
-import { getFloat, getString, map } from '../../dataUtils';
-import { log, filterUndefined } from '../../utils';
+import { connect, handleRDF, buildQuery } from '../../connect';
+import { getFloat, map } from '../../dataUtils';
+import { log } from '../../utils';
 
 import { select, context } from './query';
 
