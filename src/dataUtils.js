@@ -84,7 +84,6 @@ export const map = (options = {}) => input =>
               mappedEntry[optionKey] = value;
             }
           });
-          console.warn(mappedEntry);
           return mappedEntry;
         }
         catch (e) {

@@ -1,12 +1,13 @@
 import React from 'react';
 import Timeline from 'react-visjs-timeline';
+import moment from 'moment';
 
 import Screen from '../../components/Screen';
 import Loading from '../../components/Loading';
 
 import { connect, handleRDF, buildQuery } from '../../connect';
-import { getString } from '../../dataUtils';
-import { log, filterUndefined } from '../../utils';
+import { map } from '../../dataUtils';
+import { log } from '../../utils';
 
 import { select, context } from './query';
 
@@ -48,54 +49,51 @@ const TIMELINE = ({ data }) => {
   );
 }
 
+const buildDate = date => {
+  const friendly = moment(date).format('MMMM Qo, YYYY');
+  return `<a title=${date}>${friendly}</a>`;
+}
+
 const buildContent = ({ id, title, start, end }) => {
   const html = [];
+  html.push(`<div class="title"><a href=${id} target="_blank">`);
   if (title) {
-    html.push(`<div class="title">${title}</div>`);
-  }
-  if (end) {
-    html.push(`<div class="date">${start} &ndash; ${end}</div>`)
+    html.push(title);
   } else {
-    html.push(`<div class="date">${start}</div>`)
+    html.push(id);
   }
+  html.push('</a></div>');
+  html.push('<div class="date">');
+  html.push(buildDate(start));
+  if (end) {
+    html.push(' &ndash; ');
+    html.push(buildDate(end))
+  }
+  html.push('</div>');
   return html.join('');
 }
 
 const handle = response =>
   handleRDF({ context, compactOptions: { graph: true } })(response)
     .then(log)
-    .then(json => json['@graph'].map((entry, index) => {
-      try {
-        const dateData = entry['dct:date']
-          ? {
-          start: getString(entry['dct:date'])
-        } : { 
-          start: getString(entry['schema:startDate']),
-          end: getString(entry['schema:endDate'])
-        }
-        if (dateData.start === dateData.end) {
-          dateData.end = undefined;
-        }
-
-        const title = entry['dct:title']
-          ? getString(entry['dct:title'])
-          : undefined;
-
-        const id = entry['@id'];
-        return {
-          id,
-          ...dateData,
-          content: buildContent({ id, title, ...dateData })
-        };
-      }
-      catch (e) {
-        console.error('Invalid data entry');
-        console.error(entry);
-        console.error(e);
-      }
-      return undefined;
+    .then(map({
+      id: { key: '@id' },
+      title: { key: 'dct:title', optional: true },
+      date: { key: 'dct:date', optional: true },
+      start: { key: 'schema:startDate', optional: true },
+      end: { key: 'schema:endDate', optional: true }
     }))
-    .then(filterUndefined);
+    .then(entries => entries.map(entry => {
+      const mapped = { ...entry };
+      if (mapped.date) {
+        mapped.start = mapped.date;
+      }
+      if (mapped.start === mapped.end) {
+        mapped.end = undefined;
+      }
+      mapped.content = buildContent(mapped);
+      return mapped;
+    }));
 
 const requests = () => ({
   data: buildQuery(select)
