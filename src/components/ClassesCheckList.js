@@ -6,6 +6,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles } from '@material-ui/core/styles';
 
+import UriLabel from './UriLabel';
+
 const styles= {
   listItem: {
     padding: 0
@@ -86,7 +88,7 @@ class ClassesCheckList extends Component {
               tabIndex={-1}
               disableRipple
             />
-            <ListItemText primary={item} className={classes.listItemText} />
+            <ListItemText primary={<UriLabel uri={item}/>} className={classes.listItemText} />
           </ListItem>
         ))}
       </List>
