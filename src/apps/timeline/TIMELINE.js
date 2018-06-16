@@ -32,15 +32,22 @@ const buildDate = date => {
   return `<a title=${date}>${friendly}</a>`;
 }
 
+const buildTitle = (uri, textOrHtml) => {
+  if (textOrHtml.indexOf('<a href=') >= 0) {
+    return textOrHtml.replace('<a href=', '<a target="_blank" href=');
+  }
+  return `<a target="_blank" href="${uri}" title="${uri}">${textOrHtml}</a>`;
+}
+
 const buildContent = ({ id, name, start, end }) => {
   const html = [];
-  html.push(`<div class="title"><a href=${id} title=${id} target="_blank">`);
+  html.push(`<div class="title">`);
   if (name) {
-    html.push(name);
+    html.push(buildTitle(id, name));
   } else {
-    html.push(id);
+    html.push(buildTitle(id, id));
   }
-  html.push('</a></div>');
+  html.push('</div>');
   html.push('<div class="date">');
   html.push(buildDate(start));
   if (end) {
