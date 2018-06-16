@@ -1,15 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Router from './root/Router';
 
-const theme = createMuiTheme();
-
 ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
+  <React.Fragment>
+    <CssBaseline />
     <Router />
-  </MuiThemeProvider>
+  </React.Fragment>
   ,
   document.getElementById('root')
 );

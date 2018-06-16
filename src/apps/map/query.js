@@ -21,7 +21,9 @@ WHERE {
       ?resource dct:title ?title .
     }
     OPTIONAL {
-      ?resource a ?type .
+      ?original
+        ?x ?resource ;
+        a ?type .
     }
   }
   LIMIT 10000

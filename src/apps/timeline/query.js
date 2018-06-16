@@ -12,7 +12,7 @@ CONSTRUCT {
 }
 FROM <${graph}>
 WHERE {
-  SELECT ?resource ?type ?title ?startDate ?endDate ?date
+  SELECT ?resource ?title ?startDate ?endDate ?date ?type
   WHERE {
     {
       ?resource
@@ -27,7 +27,9 @@ WHERE {
       ?resource dct:title ?title .
     }
     OPTIONAL {
-      ?resource a ?type .
+      ?original
+        ?x ?resource ;
+        a ?type .
     }
   }
   LIMIT 10000

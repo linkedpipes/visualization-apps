@@ -2,8 +2,8 @@ import React from 'react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import { latLngBounds } from 'leaflet'
 
-import Screen from '../../components/Screen';
-import Loading from '../../components/Loading';
+import withLoading from '../../components/withLoading';
+import withClassFilter from '../../components/withClassFilter';
 
 import { connect, handleRDF, buildQuery } from '../../connect';
 import { getFloat, map } from '../../dataUtils';
@@ -33,31 +33,13 @@ L.Marker.prototype.options.icon = L.icon({
 
 const MAP = ({ data }) => {
 
-  if (data.pending) {
-    return (
-      <Screen>
-        <Loading/>
-      </Screen>
-      );
+  let bounds;
+  if (data.length > 0) {
+    bounds = latLngBounds(data[0].position);
+    data.forEach(entry => bounds.extend(entry.position));
   }
 
-  if (data.rejected) {
-    console.error(data.reason);
-    return (
-      <Screen>
-        <h1>Unable to fetch data</h1>
-        <h2>{data.reason.toString()}</h2>
-      </Screen>
-    );
-  }
-
-  console.log(data.value);
-
-  const firstBounds = data.value[0] ? data.value[0].position : [0, 0];
-  const bounds = latLngBounds(firstBounds);
-  data.value.forEach(entry => bounds.extend(entry.position));
-
-  const markers = data.value.map((entry) => (
+  const markers = data.map((entry) => (
     <Marker key={entry.key} position={entry.position}>
       <Popup>
         <div>
@@ -87,7 +69,6 @@ const handle = response =>
   handleRDF({ context, compactOptions: { graph: true } })(response)
     .then(log)
     .then(map({
-      id: { key: '@id' },
       latitude: { key: 'schema:latitude', parser: getFloat },
       longitude: { key: 'schema:longitude', parser: getFloat },
       title: { key: 'dct:title', optional: true }
@@ -104,4 +85,4 @@ const requests = () => ({
   data: buildQuery(select)
 });
 
-export default connect(handle)(requests)(MAP);
+export default connect(handle)(requests)(withLoading(withClassFilter(MAP)));

@@ -2,8 +2,8 @@ import React from 'react';
 import Timeline from 'react-visjs-timeline';
 import moment from 'moment';
 
-import Screen from '../../components/Screen';
-import Loading from '../../components/Loading';
+import withLoading from '../../components/withLoading';
+import withClassFilter from '../../components/withClassFilter';
 
 import { connect, handleRDF, buildQuery } from '../../connect';
 import { map } from '../../dataUtils';
@@ -20,34 +20,11 @@ const options = {
   showCurrentTime: false
 };
 
-const TIMELINE = ({ data }) => {
-
-  if (data.pending) {
-    return (
-      <Screen>
-        <Loading/>
-      </Screen>
-      );
-  }
-
-  if (data.rejected) {
-    console.error(data.reason);
-    return (
-      <Screen>
-        <h1>Unable to fetch data</h1>
-        <h2>{data.reason.toString()}</h2>
-      </Screen>
-    );
-  }
-
-  console.log(data.value);
-  
-  return (
-    <div className="TIMELINE">
-      <Timeline options={options} items={data.value}/>
-    </div>
-  );
-}
+const TIMELINE = ({ data }) => (
+  <div className="TIMELINE">
+    <Timeline options={options} items={data}/>
+  </div>
+);
 
 const buildDate = date => {
   const friendly = moment(date).format('MMMM Qo, YYYY');
@@ -99,4 +76,4 @@ const requests = () => ({
   data: buildQuery(select)
 });
 
-export default connect(handle)(requests)(TIMELINE);
+export default connect(handle)(requests)(withLoading(withClassFilter(TIMELINE)));

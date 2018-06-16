@@ -1,0 +1,26 @@
+.filter {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1000;
+}
+.card {
+  width: 400px;
+}
+.cardContent {
+  max-height: 80vh !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding: 0 10px !important;
+}
+.close {
+  margin-left: auto !important;
+}
+.fab {
+  position: absolute !important;
+  right: 8px;
+  bottom: 4px;
+}
+.hidden {
+  display: none !important;
+}

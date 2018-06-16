@@ -58,6 +58,8 @@ export const buildQuery = query => {
     query = query(configuration);
   }
 
+  console.log("SPARQL QUERY:", query);
+
   const queryParams = {
     query
   };

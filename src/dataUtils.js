@@ -8,6 +8,10 @@ export const setLanguage = language => {
   Language: ${language}`);
 }
 
+const getArray = jsonldValue => {
+  return [].concat(jsonldValue);
+}
+
 const getValueFromArray = jsonldArray => {
   const candidate = jsonldArray.find(
     entry => entry['@language'] === configuration.language
@@ -68,8 +72,13 @@ const getTypedValue = (value, { parser = getString, optional = false }) => {
 const filterUndefined = value =>
   value.filter(entry => entry !== undefined);
 
-export const map = (options = {}) => input =>
-  Promise.resolve(input)
+export const map = (options = {}) => input => {
+  options = {
+    '@id': { key: '@id' },
+    '@type': { key: '@type', optional: true, parser: getArray },
+    ...options
+  }
+  return Promise.resolve(input)
     .then(input => {
       if (input['@graph']) {
         input = input['@graph'];
@@ -95,3 +104,4 @@ export const map = (options = {}) => input =>
       })
     })
     .then(filterUndefined);
+}
