@@ -8,6 +8,7 @@ import withClassFilter from '../../components/withClassFilter';
 import { connect, handleRDF, buildQuery } from '../../connect';
 import { map } from '../../dataUtils';
 import { log } from '../../utils';
+import { dct, schema } from '../../ontologies';
 
 import { select, context } from './query';
 
@@ -55,10 +56,10 @@ const handle = response =>
     .then(log)
     .then(map({
       id: { key: '@id' },
-      name: { key: 'dct:title', optional: true },
-      date: { key: 'dct:date', optional: true },
-      start: { key: 'schema:startDate', optional: true },
-      end: { key: 'schema:endDate', optional: true }
+      name: { key: dct('title'), optional: true },
+      date: { key: dct('date'), optional: true },
+      start: { key: schema('startDate'), optional: true },
+      end: { key: schema('endDate'), optional: true }
     }))
     .then(entries => entries.map(entry => {
       const mapped = { ...entry };

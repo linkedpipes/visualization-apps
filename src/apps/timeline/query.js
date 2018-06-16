@@ -38,7 +38,7 @@ WHERE {
 
 export const context = {
   '@context': {
-    dct: 'http://purl.org/dc/terms/',
-    schema: 'http://schema.org/'
+    //dct: 'http://purl.org/dc/terms/',
+    //schema: 'http://schema.org/'
   }
 };
