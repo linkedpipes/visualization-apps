@@ -41,6 +41,7 @@ const withClassFilter = (WrappedComponent) => (
       const allTypes = [...typesSet];
 
       this.state = {
+        enabled: allTypes.length > 0,
         expanded: false,
         types: allTypes,
         selected: allTypes
@@ -63,8 +64,14 @@ const withClassFilter = (WrappedComponent) => (
     };
 
     render() {
-      const { expanded, types, selected } = this.state;
+      const { enabled, expanded, types, selected } = this.state;
       const { data } = this.props;
+
+      if (!enabled) {
+        return (
+          <WrappedComponent {...this.props} data={data}/>
+        );
+      }
 
       const filteredData = filterClasses(data, selected);
 

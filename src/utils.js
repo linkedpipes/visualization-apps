@@ -9,6 +9,9 @@ export const filterUndefined = value =>
 
 export const filterClasses = (data, classes) => {
   return data.filter(item => {
+    if (!Array.isArray(item['@type'])) {
+      return false;
+    }
     for (let type of item['@type']) {
       if (classes.indexOf(type) >= 0) {
         return true;
